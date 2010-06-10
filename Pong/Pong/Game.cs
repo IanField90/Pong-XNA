@@ -117,6 +117,7 @@ namespace Pong
 #endif
             #endregion
 
+            updateKeyboard();
             // TODO: Add your update logic here
             // MOVE BALL
             // Move RightBat regarding keyboard input
@@ -158,6 +159,23 @@ namespace Pong
             spriteBatch.Draw(Ball.sprite, Ball.position, Color.White);
             spriteBatch.Draw(LeftBat.sprite, LeftBat.position, Color.White);
             spriteBatch.Draw(RightBat.sprite, RightBat.position, Color.White);
+        }
+
+        private void updateKeyboard()
+        {
+            KeyboardState keybState = Keyboard.GetState();
+
+            //Move down for arrow down
+            if (keybState.IsKeyDown(Keys.Down))
+            {
+                LeftBat.position.Y += 5;
+            }
+
+            //Move up for arrow up
+            if (keybState.IsKeyDown(Keys.Up))
+            {
+                LeftBat.position.Y -= 5;
+            }
         }
     }
 }
