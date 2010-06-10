@@ -1,2 +1,0 @@
-C:\Users\Ian\Desktop\Pong\Pong\Content\obj\x86\Debug\ResolveAssemblyReference.cache
-C:\Code\Pong\Content\obj\x86\Debug\ResolveAssemblyReference.cache

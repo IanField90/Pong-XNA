@@ -19,19 +19,26 @@ namespace Pong
     public class Game : Microsoft.Xna.Framework.Game
     {
         #region Variables
+
+        // Graphics
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Rectangle TitleSafe;
         Rectangle viewportRect;
         SpriteFont Font1;
+
+        // Objects
         int PlayerScore = 0;
         int CompScore = 0;
         int ScoreBar = 30;
+
         GameObject Ball, LeftBat, RightBat;
         Vector2 CompScorePos;
         Vector2 PlayerScorePos;
+
         int VertVelocDir = 1; // 1 up -1 down
         int HoriVelocDir = 1; // 1 right -1 left
+
         const int MAX_SCORE = 5;
 
         #endregion
@@ -126,13 +133,16 @@ namespace Pong
         {
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
-            // Bats Dim 13 x 89
-            // Ball Dim 10 x 10 
 
-            spriteBatch.Draw(Ball.sprite, Ball.position, Color.White);
-            spriteBatch.Draw(LeftBat.sprite, LeftBat.position, Color.White);
-            spriteBatch.Draw(RightBat.sprite, RightBat.position, Color.White);
+            drawScores();
+            drawObjects();
 
+            spriteBatch.End();
+            base.Draw(gameTime);
+        }
+
+        private void drawScores()
+        {
             // Computer Score
             Vector2 FontOrigin = Font1.MeasureString(CompScore.ToString()) / 2;
             spriteBatch.DrawString(Font1, CompScore.ToString(),
@@ -141,10 +151,13 @@ namespace Pong
             FontOrigin = Font1.MeasureString(PlayerScore.ToString()) / 2;
             spriteBatch.DrawString(Font1, PlayerScore.ToString(),
                 PlayerScorePos, Color.Yellow, 0, FontOrigin, 1.0f, SpriteEffects.None, 0.5f);
+        }
 
-            // End drawing
-            spriteBatch.End();
-            base.Draw(gameTime);
+        private void drawObjects()
+        {
+            spriteBatch.Draw(Ball.sprite, Ball.position, Color.White);
+            spriteBatch.Draw(LeftBat.sprite, LeftBat.position, Color.White);
+            spriteBatch.Draw(RightBat.sprite, RightBat.position, Color.White);
         }
     }
 }
