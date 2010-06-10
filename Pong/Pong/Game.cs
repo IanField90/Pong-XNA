@@ -19,6 +19,10 @@ namespace Pong
     public class Game : Microsoft.Xna.Framework.Game
     {
         #region Variables
+        
+        // Game state
+        // true = playing ; false = menu
+        bool gameState = false;
 
         // Graphics
         GraphicsDeviceManager graphics;
@@ -117,7 +121,15 @@ namespace Pong
 #endif
             #endregion
 
-            updateKeyboard();
+            if (gameState)
+            {
+                gameUpdateKeyboard();
+            }
+            if (!gameState)
+            {
+                menuUpdateKeyboard();
+            }
+
             // TODO: Add your update logic here
             // MOVE BALL
             // Move RightBat regarding keyboard input
@@ -135,8 +147,17 @@ namespace Pong
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
 
-            drawScores();
-            drawObjects();
+            if (gameState)
+            {
+                drawScores();
+                drawObjects();
+            }
+            if (!gameState)
+            {
+                drawMenu();
+            }
+
+
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -161,8 +182,15 @@ namespace Pong
             spriteBatch.Draw(RightBat.sprite, RightBat.position, Color.White);
         }
 
-        private void updateKeyboard()
+        private void drawMenu()
         {
+            spriteBatch.DrawString(Font1, "Press Enter", new Vector2(100,100), Color.White);
+        }
+
+        private void gameUpdateKeyboard()
+        {
+            // Bats Dim 13 x 89
+            // Ball Dim 10 x 10
             KeyboardState keybState = Keyboard.GetState();
 
             //Move down for arrow down
@@ -175,6 +203,27 @@ namespace Pong
             if (keybState.IsKeyDown(Keys.Up))
             {
                 LeftBat.position.Y -= 5;
+            }
+
+            //Stop bat from falling off the side
+            if (LeftBat.position.Y < 0)
+            {
+                LeftBat.position.Y = 0;
+            }
+            if (LeftBat.position.Y > (graphics.GraphicsDevice.Viewport.Height - 89))
+            {   
+                LeftBat.position.Y = graphics.GraphicsDevice.Viewport.Height - 89;
+            }
+        }
+
+        private void menuUpdateKeyboard()
+        {
+            KeyboardState keybState = Keyboard.GetState();
+
+            // press enter to start a game
+            if (keybState.IsKeyDown(Keys.Enter))
+            {
+                gameState = true;
             }
         }
     }
