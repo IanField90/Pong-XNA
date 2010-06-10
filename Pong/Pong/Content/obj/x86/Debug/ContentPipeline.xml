@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
+  <Asset Type="Pipeline:BuildItemCollection">
+    <Item>
+      <Source>Sprites\Ball1.png</Source>
+      <Name>Sprites\Ball1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Ian\Desktop\Pong\Pong\bin\x86\Debug\Content\Sprites\Ball1.xnb</Output>
+      <Time>2010-05-20T14:51:39.9950797+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Sprites\Bat1.png</Source>
+      <Name>Sprites\Bat1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Ian\Desktop\Pong\Pong\bin\x86\Debug\Content\Sprites\Bat1.xnb</Output>
+      <Time>2010-05-20T14:51:39.9950797+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Sprites\Bat2.png</Source>
+      <Name>Sprites\Bat2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Ian\Desktop\Pong\Pong\bin\x86\Debug\Content\Sprites\Bat2.xnb</Output>
+      <Time>2010-05-20T14:51:39.9950797+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Fonts\ScoreFont.spritefont</Source>
+      <Name>Fonts\ScoreFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Ian\Desktop\Pong\Pong\bin\x86\Debug\Content\Fonts\ScoreFont.xnb</Output>
+      <Time>2010-05-20T14:52:03.7539214+01:00</Time>
+    </Item>
+    <Item>
+      <Source>blank.png</Source>
+      <Name>blank</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Ian\Desktop\Pong\Pong\bin\x86\Debug\Content\blank.xnb</Output>
+      <Time>2010-06-10T17:22:12.1357229+01:00</Time>
+    </Item>
+    <BuildSuccessful>true</BuildSuccessful>
+    <Settings>
+      <TargetPlatform>Windows</TargetPlatform>
+      <BuildConfiguration>Debug</BuildConfiguration>
+      <CompressContent>false</CompressContent>
+      <RootDirectory>C:\Users\Ian\Desktop\Pong\Pong\Content\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Ian\Desktop\Pong\Pong\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Ian\Desktop\Pong\Pong\Content\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Ian\Desktop\Pong\Pong\bin\x86\Debug\Content\</OutputDirectory>
+    </Settings>
+    <Assemblies>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
+        <Value>2009-05-28T01:16:14+01:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll</Key>
+        <Value>2009-05-28T01:16:06+01:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
+        <Value>2009-05-28T01:16:16+01:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
+        <Value>2009-05-28T01:16:26+01:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
+        <Value>2009-05-28T01:16:12+01:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll</Key>
+        <Value>2009-05-28T01:16:06+01:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Windows\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\3.1.0.0__6d5c3888ef60e27d\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2009-11-07T12:46:03.2878678+00:00</Value>
+      </Assembly>
+    </Assemblies>
+  </Asset>
+</XnaContent>
