@@ -27,6 +27,7 @@ namespace Pong
         // Graphics
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        
         private Rectangle TitleSafe;
         Rectangle viewportRect;
         SpriteFont Font1;
@@ -35,6 +36,8 @@ namespace Pong
         int PlayerScore = 0;
         int CompScore = 0;
         int ScoreBar = 30;
+
+        Texture2D lineTexture;
 
         GameObject Ball, LeftBat, RightBat;
         Vector2 CompScorePos;
@@ -76,6 +79,7 @@ namespace Pong
             Ball = new GameObject(Content.Load<Texture2D>("Sprites\\Ball1"));
             LeftBat = new GameObject(Content.Load<Texture2D>("Sprites\\Bat1"));
             RightBat = new GameObject(Content.Load<Texture2D>("Sprites\\Bat2"));
+            lineTexture = Content.Load<Texture2D>("Sprites\\line");
 
             //drawable area of the game screen.
             viewportRect = new Rectangle(0, 0,
@@ -149,6 +153,7 @@ namespace Pong
 
             if (gameState)
             {
+                drawField();
                 drawScores();
                 drawObjects();
             }
@@ -180,6 +185,14 @@ namespace Pong
             spriteBatch.Draw(Ball.sprite, Ball.position, Color.White);
             spriteBatch.Draw(LeftBat.sprite, LeftBat.position, Color.White);
             spriteBatch.Draw(RightBat.sprite, RightBat.position, Color.White);
+        }
+
+        private void drawField()
+        {
+            for (int i = 0; i < graphics.GraphicsDevice.Viewport.Height; i++)
+            {
+                spriteBatch.Draw(lineTexture, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, i), Color.White);
+            }
         }
 
         private void drawMenu()
