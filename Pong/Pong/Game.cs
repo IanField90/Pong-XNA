@@ -89,8 +89,8 @@ namespace Pong
 
             // SET initial positions of objects
             Ball.position = new Vector2(viewportRect.Width / 2 - 5, viewportRect.Height / 2 - 5 + ScoreBar);
-            LeftBat.position = new Vector2(viewportRect.Left + 5, viewportRect.Top + 5 + ScoreBar);
-            RightBat.position = new Vector2(viewportRect.Right - 18, viewportRect.Bottom - 94);
+            LeftBat.position = new Vector2(viewportRect.Left + 5, viewportRect.Top + ScoreBar);
+            RightBat.position = new Vector2(viewportRect.Right - 18, viewportRect.Bottom - 93);
             // SET initial positions of scores
             CompScorePos = new Vector2(viewportRect.Width / 2 - 200, viewportRect.Top + 14);
             PlayerScorePos = new Vector2(viewportRect.Width / 2 + 200, viewportRect.Top + 14);
@@ -189,9 +189,13 @@ namespace Pong
 
         private void drawField()
         {
-            for (int i = 0; i < graphics.GraphicsDevice.Viewport.Height; i++)
+            for (int i = ScoreBar; i < graphics.GraphicsDevice.Viewport.Height; i++)
             {
                 spriteBatch.Draw(lineTexture, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - 2, i), Color.White);
+            }
+            for (int j = 0; j < graphics.GraphicsDevice.Viewport.Width; j += 4)
+            {
+                spriteBatch.Draw(lineTexture, new Vector2(j, ScoreBar - 1), Color.White);
             }
         }
 
@@ -202,7 +206,8 @@ namespace Pong
 
         private void gameUpdateKeyboard()
         {
-            // Bats Dim 13 x 89
+            // Bats Dim 13 x 83
+            // BUG: right bat dim is 13 x 95 px needs 11 central pxs removed
             // Ball Dim 10 x 10
             KeyboardState keybState = Keyboard.GetState();
 
@@ -219,13 +224,13 @@ namespace Pong
             }
 
             //Stop bat from falling off the side
-            if (LeftBat.position.Y < 0)
+            if (LeftBat.position.Y < ScoreBar)
             {
-                LeftBat.position.Y = 0;
+                LeftBat.position.Y = ScoreBar;
             }
-            if (LeftBat.position.Y > (graphics.GraphicsDevice.Viewport.Height - 89))
+            if (LeftBat.position.Y > (graphics.GraphicsDevice.Viewport.Height - 83))
             {   
-                LeftBat.position.Y = graphics.GraphicsDevice.Viewport.Height - 89;
+                LeftBat.position.Y = graphics.GraphicsDevice.Viewport.Height - 83;
             }
         }
 
