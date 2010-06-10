@@ -191,7 +191,7 @@ namespace Pong
         {
             for (int i = 0; i < graphics.GraphicsDevice.Viewport.Height; i++)
             {
-                spriteBatch.Draw(lineTexture, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, i), Color.White);
+                spriteBatch.Draw(lineTexture, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - 2, i), Color.White);
             }
         }
 
