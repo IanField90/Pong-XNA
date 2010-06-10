@@ -1,0 +1,2 @@
+The SE1SA5 folder contains the finished practicals for the Programming Module at the University of Reading for the year 09/10.
+The Pong folder is a game in XNA using Visual Studio. This is currently in development and currently not usable.
