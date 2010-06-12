@@ -92,7 +92,8 @@ namespace Pong
             // SET initial positions of objects
             Ball.position = InitBallPos;
             LeftBat.position = new Vector2(viewportRect.Left + EDGE, viewportRect.Top + ScoreBar);
-            RightBat.position = new Vector2(viewportRect.Right - RightBat.getWidth() - EDGE, viewportRect.Bottom - RightBat.getHeight());
+            RightBat.position = new Vector2(viewportRect.Right - RightBat.getWidth() - EDGE, viewportRect.Bottom - RightBat.getHeight() - 300); // -300 is a test for right bat collision
+            
             // SET initial positions of scores
             CompScorePos = new Vector2(viewportRect.Width/2 + 200, viewportRect.Top + 14);
             PlayerScorePos = new Vector2(viewportRect.Width/2 - 200, viewportRect.Top + 14);
@@ -190,45 +191,57 @@ namespace Pong
             // Ensure within vertical field dimensions
             if ((Ball.position.X > 0 && Ball.position.X < viewportRect.Right - Ball.getWidth()) && (Ball.position.Y > ScoreBar && Ball.position.Y < viewportRect.Bottom - Ball.getHeight()))
             {
-                // TODO: Check RightBat covers current Ball Y co-ordinate
-                // AFTER: Computer AI is sorted
-
                 // Left bat collision check
                 // If adjacent to bat or partly past bat
                 if ((Ball.position.X <= EDGE + LeftBat.getWidth() && Ball.position.X != 0) 
                     && (Ball.position.Y > LeftBat.position.Y - Ball.getHeight() 
                         && Ball.position.Y < LeftBat.position.Y + LeftBat.getHeight() + Ball.getHeight()))
                 {
-                    // Reverse vector
+                    // Reverse horizontal
                     Ball.velocity.X *= -1;
-                    Ball.velocity.Y *= -1;
                 }
 
                 // Right bat collision check
                 // If adjacent or partly past bat
-                if (Ball.position.X >= viewportRect.Right - EDGE - RightBat.getWidth() && Ball.position.X != viewportRect.Right - Ball.getWidth())
+                if (Ball.position.X >= viewportRect.Right - EDGE - RightBat.getWidth()
+                    && (Ball.position.Y > RightBat.position.Y - Ball.getHeight()
+                        && Ball.position.Y < RightBat.position.Y + RightBat.getHeight() + Ball.getHeight()))
                 {
-                    // Reverse vector
+                    // Reverse horizontal
                     Ball.velocity.X *= -1;
-                    Ball.velocity.Y *= -1;
                 }
-                
-                Ball.position += Ball.velocity;
             }
             
+            // If ball above or at scorebar
+            if (Ball.position.Y <= ScoreBar)
+            {
+                Ball.position.Y = ScoreBar;
+                Ball.velocity.Y *= -1;
+            }
+
+            // If ball bellow or at bottom
+            if (Ball.position.Y >= viewportRect.Bottom - Ball.getHeight())
+            {
+                Ball.position.Y = viewportRect.Bottom - Ball.getHeight();
+                Ball.velocity.Y *= -1;
+            }
+
             // If ball goes past player bat
-            else if (Ball.position.X == 0)
+            if (Ball.position.X == 0)
             {
                 CompScore++;
                 Ball.position = InitBallPos;
             }
             
             // If ball goes past computer bat
-            else if (Ball.position.X == viewportRect.Right - Ball.getWidth())
+            if (Ball.position.X == viewportRect.Right - Ball.getWidth())
             {
                 PlayerScore++;
                 Ball.position = InitBallPos;
-            }     
+            }
+
+            // ensure it draws within lines
+            Ball.position += Ball.velocity;
         }
 
         /// <summary>
@@ -318,3 +331,6 @@ namespace Pong
         }
     }
 }
+
+// TODO:    Add bat 'hit' speed boost effect
+//          Computer AI - Move once ball past halfway
