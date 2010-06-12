@@ -43,10 +43,8 @@ namespace Pong
         Vector2 CompScorePos;
         Vector2 PlayerScorePos;
 
-        int VertVelocDir = 1; // 1 up -1 down
-        int HoriVelocDir = 1; // 1 right -1 left
-
         const int MAX_SCORE = 5;
+        const int EDGE = 5;
 
         #endregion
         public Game()
@@ -74,27 +72,26 @@ namespace Pong
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            // Bats Dim 13 x 89
+            // Ball Dim 10 x 10
             Font1 = Content.Load<SpriteFont>("Fonts\\ScoreFont");
-            Ball = new GameObject(Content.Load<Texture2D>("Sprites\\Ball1"));
-            LeftBat = new GameObject(Content.Load<Texture2D>("Sprites\\Bat1"));
-            RightBat = new GameObject(Content.Load<Texture2D>("Sprites\\Bat2"));
+            Ball = new GameObject(Content.Load<Texture2D>("Sprites\\Ball1"), 10, 10);
+            LeftBat = new GameObject(Content.Load<Texture2D>("Sprites\\Bat1"), 13, 89);
+            RightBat = new GameObject(Content.Load<Texture2D>("Sprites\\Bat2"), 13, 89);
             lineTexture = Content.Load<Texture2D>("Sprites\\line");
 
             //drawable area of the game screen.
             viewportRect = new Rectangle(0, 0,
                 graphics.GraphicsDevice.Viewport.Width,
                 graphics.GraphicsDevice.Viewport.Height);
-            // 5 px from bottom is max border ball must not go past this
 
             // SET initial positions of objects
-            Ball.position = new Vector2(viewportRect.Width / 2 - 5, viewportRect.Height / 2 - 5 + ScoreBar);
-            LeftBat.position = new Vector2(viewportRect.Left + 5, viewportRect.Top + ScoreBar);
-            RightBat.position = new Vector2(viewportRect.Right - 18, viewportRect.Bottom - 89);
+            Ball.position = new Vector2(viewportRect.Width/2 - Ball.getWidth()/2, viewportRect.Height/2 - Ball.getHeight()/2 + ScoreBar/2);
+            LeftBat.position = new Vector2(viewportRect.Left + EDGE, viewportRect.Top + ScoreBar);
+            RightBat.position = new Vector2(viewportRect.Right - RightBat.getWidth() - EDGE, viewportRect.Bottom - RightBat.getHeight());
             // SET initial positions of scores
-            CompScorePos = new Vector2(viewportRect.Width / 2 - 200, viewportRect.Top + 14);
-            PlayerScorePos = new Vector2(viewportRect.Width / 2 + 200, viewportRect.Top + 14);
-            // TODO: Set Ball initial direction. Rand?
+            CompScorePos = new Vector2(viewportRect.Width/2 - 200, viewportRect.Top + 14);
+            PlayerScorePos = new Vector2(viewportRect.Width/2 + 200, viewportRect.Top + 14);
             base.LoadContent();
 
         }
@@ -136,7 +133,6 @@ namespace Pong
 
             // TODO: Add your update logic here
             // MOVE BALL
-            // Move RightBat regarding keyboard input
             // AI for LeftBat only after ball passed halfway
 
             base.Update(gameTime);
@@ -162,8 +158,6 @@ namespace Pong
                 drawMenu();
             }
 
-
-
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -171,11 +165,11 @@ namespace Pong
         private void drawScores()
         {
             // Computer Score
-            Vector2 FontOrigin = Font1.MeasureString(CompScore.ToString()) / 2;
+            Vector2 FontOrigin = Font1.MeasureString(CompScore.ToString())/2;
             spriteBatch.DrawString(Font1, CompScore.ToString(),
                 CompScorePos, Color.Yellow, 0, FontOrigin, 1.0f, SpriteEffects.None, 0.5f);
             // Player Score
-            FontOrigin = Font1.MeasureString(PlayerScore.ToString()) / 2;
+            FontOrigin = Font1.MeasureString(PlayerScore.ToString())/2;
             spriteBatch.DrawString(Font1, PlayerScore.ToString(),
                 PlayerScorePos, Color.Yellow, 0, FontOrigin, 1.0f, SpriteEffects.None, 0.5f);
         }
@@ -191,7 +185,7 @@ namespace Pong
         {
             for (int i = ScoreBar; i < graphics.GraphicsDevice.Viewport.Height; i++)
             {
-                spriteBatch.Draw(lineTexture, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - 2, i), Color.White);
+                spriteBatch.Draw(lineTexture, new Vector2(graphics.GraphicsDevice.Viewport.Width/2 - 2, i), Color.White);
             }
             for (int j = 0; j < graphics.GraphicsDevice.Viewport.Width; j += 4)
             {
@@ -206,9 +200,6 @@ namespace Pong
 
         private void gameUpdateKeyboard()
         {
-            // Bats Dim 13 x 89
-            // BUG: right bat dim is 13 x 95 px needs 11 central pxs removed
-            // Ball Dim 10 x 10
             KeyboardState keybState = Keyboard.GetState();
 
             //Move down for arrow down
@@ -228,9 +219,9 @@ namespace Pong
             {
                 LeftBat.position.Y = ScoreBar;
             }
-            if (LeftBat.position.Y > (graphics.GraphicsDevice.Viewport.Height - 89))
-            {   
-                LeftBat.position.Y = graphics.GraphicsDevice.Viewport.Height - 89;
+            if (LeftBat.position.Y > (graphics.GraphicsDevice.Viewport.Height - LeftBat.getHeight()))
+            {
+                LeftBat.position.Y = graphics.GraphicsDevice.Viewport.Height - LeftBat.getHeight();
             }
         }
 

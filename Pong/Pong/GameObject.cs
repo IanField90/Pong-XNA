@@ -15,13 +15,18 @@ namespace Pong
         public Vector2 position;
         public Vector2 velocity;
         public bool alive; // only used for ball
+        private int width, height;
 
-        public GameObject(Texture2D loadedTexture)
+        public GameObject(Texture2D loadedTexture, int x, int y)
         {
             position = Vector2.Zero;
             sprite = loadedTexture;
             velocity = Vector2.Zero;
-            alive = false;
+            width = x;
+            height = y;
+            alive = true;
         }
+        public int getHeight(){ return height; }
+        public int getWidth() { return width; }
     }
 }
