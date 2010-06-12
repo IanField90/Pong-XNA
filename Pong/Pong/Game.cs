@@ -23,12 +23,12 @@ namespace Pong
         // Game state
         // true = playing ; false = menu
         bool gameState = false;
+        int Winner = 0;
 
         // Graphics
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         
-        private Rectangle TitleSafe;
         Rectangle viewportRect;
         SpriteFont Font1;
 
@@ -42,6 +42,7 @@ namespace Pong
         GameObject Ball, LeftBat, RightBat;
         Vector2 CompScorePos;
         Vector2 PlayerScorePos;
+        Vector2 InitBallPos;
 
         const int MAX_SCORE = 5;
         const int EDGE = 5;
@@ -84,14 +85,16 @@ namespace Pong
             viewportRect = new Rectangle(0, 0,
                 graphics.GraphicsDevice.Viewport.Width,
                 graphics.GraphicsDevice.Viewport.Height);
+            InitBallPos = new Vector2(viewportRect.Width / 2 - Ball.getWidth() / 2, viewportRect.Height / 2 - Ball.getHeight() / 2 + ScoreBar / 2);
 
             // SET initial positions of objects
-            Ball.position = new Vector2(viewportRect.Width/2 - Ball.getWidth()/2, viewportRect.Height/2 - Ball.getHeight()/2 + ScoreBar/2);
+            Ball.position = InitBallPos;
             LeftBat.position = new Vector2(viewportRect.Left + EDGE, viewportRect.Top + ScoreBar);
             RightBat.position = new Vector2(viewportRect.Right - RightBat.getWidth() - EDGE, viewportRect.Bottom - RightBat.getHeight());
             // SET initial positions of scores
             CompScorePos = new Vector2(viewportRect.Width/2 - 200, viewportRect.Top + 14);
             PlayerScorePos = new Vector2(viewportRect.Width/2 + 200, viewportRect.Top + 14);
+            Ball.velocity = new Vector2(5, -1); // initialise ball movement for testing
             base.LoadContent();
 
         }
@@ -125,6 +128,17 @@ namespace Pong
             if (gameState)
             {
                 gameUpdateKeyboard();
+                ballHandler();
+                if (PlayerScore == MAX_SCORE)
+                {
+                    Winner = 1;
+                    gameState = false;
+                }
+                if (CompScore == MAX_SCORE)
+                {
+                    Winner = 2;
+                    gameState = false;
+                }
             }
             if (!gameState)
             {
@@ -162,6 +176,36 @@ namespace Pong
             base.Draw(gameTime);
         }
 
+        // Ball Movement and colisions performed here
+        private void ballHandler()
+        {
+            // Ensure within horizontal field dimensions
+            // Ensure within vertical field dimensions
+            if ((Ball.position.X > 0 && Ball.position.X < viewportRect.Right - Ball.getWidth()) 
+                && (Ball.position.Y > ScoreBar && Ball.position.Y < viewportRect.Bottom - Ball.getHeight()))
+            {
+                Ball.position += Ball.velocity;
+            }
+            else if (Ball.position.X == 0)
+            {
+                // give computer a point
+                if (CompScore < MAX_SCORE)
+                {
+                    CompScore++;
+                    Ball.position = InitBallPos;
+                }
+            }
+            else if (Ball.position.X == viewportRect.Right - Ball.getWidth())
+            {
+                // give player a point
+                if (PlayerScore < MAX_SCORE)
+                {
+                    PlayerScore++;
+                    Ball.position = InitBallPos;
+                }
+            }
+        }
+
         private void drawScores()
         {
             // Computer Score
@@ -195,7 +239,11 @@ namespace Pong
 
         private void drawMenu()
         {
-            spriteBatch.DrawString(Font1, "Press Enter", new Vector2(100,100), Color.White);
+            spriteBatch.DrawString(Font1, "Press Enter To Begin...", new Vector2(100,100), Color.White);
+            if(Winner == 1)
+                spriteBatch.DrawString(Font1, "You Win!", new Vector2(100, 150), Color.LimeGreen);
+            if(Winner == 2)
+                spriteBatch.DrawString(Font1, "Computer Wins!", new Vector2(100, 150), Color.Red);      
         }
 
         private void gameUpdateKeyboard()
@@ -232,6 +280,10 @@ namespace Pong
             // press enter to start a game
             if (keybState.IsKeyDown(Keys.Enter))
             {
+                // Reset winner and scores
+                Winner = 0;
+                PlayerScore = 0;
+                CompScore = 0;
                 gameState = true;
             }
         }
