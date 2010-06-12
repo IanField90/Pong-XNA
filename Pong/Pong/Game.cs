@@ -147,13 +147,9 @@ namespace Pong
             if (!gameState)
             {
                 menuUpdateKeyboard();
-            }
-            
-            
+            }      
 
             // TODO: Add your update logic here
-            // MOVE BALL
-            // AI for LeftBat only after ball passed halfway
 
             base.Update(gameTime);
         }
@@ -189,27 +185,25 @@ namespace Pong
         {
             // Ensure within horizontal field dimensions
             // Ensure within vertical field dimensions
-            if ((Ball.position.X > 0 && Ball.position.X < viewportRect.Right - Ball.getWidth()) && (Ball.position.Y > ScoreBar && Ball.position.Y < viewportRect.Bottom - Ball.getHeight()))
+            
+            // Left bat collision check
+            // If adjacent to bat or partly past bat
+            if ((Ball.position.X <= EDGE + LeftBat.getWidth() && Ball.position.X != 0)
+                && (Ball.position.Y > LeftBat.position.Y - Ball.getHeight()
+                    && Ball.position.Y < LeftBat.position.Y + LeftBat.getHeight() + Ball.getHeight()))
             {
-                // Left bat collision check
-                // If adjacent to bat or partly past bat
-                if ((Ball.position.X <= EDGE + LeftBat.getWidth() && Ball.position.X != 0) 
-                    && (Ball.position.Y > LeftBat.position.Y - Ball.getHeight() 
-                        && Ball.position.Y < LeftBat.position.Y + LeftBat.getHeight() + Ball.getHeight()))
-                {
-                    // Reverse horizontal
-                    Ball.velocity.X *= -1;
-                }
+                // Reverse horizontal
+                Ball.velocity.X *= -1;
+            }
 
-                // Right bat collision check
-                // If adjacent or partly past bat
-                if (Ball.position.X >= viewportRect.Right - EDGE - RightBat.getWidth()
-                    && (Ball.position.Y > RightBat.position.Y - Ball.getHeight()
-                        && Ball.position.Y < RightBat.position.Y + RightBat.getHeight() + Ball.getHeight()))
-                {
-                    // Reverse horizontal
-                    Ball.velocity.X *= -1;
-                }
+            // Right bat collision check
+            // If adjacent or partly past bat
+            if (Ball.position.X >= viewportRect.Right - EDGE - RightBat.getWidth()
+                && (Ball.position.Y > RightBat.position.Y - Ball.getHeight()
+                    && Ball.position.Y < RightBat.position.Y + RightBat.getHeight() + Ball.getHeight()))
+            {
+                // Reverse horizontal
+                Ball.velocity.X *= -1;
             }
             
             // If ball above or at scorebar
@@ -334,3 +328,5 @@ namespace Pong
 
 // TODO:    Add bat 'hit' speed boost effect
 //          Computer AI - Move once ball past halfway
+//          Random ball direction initially
+//          Ensure ball goes towards last loser
