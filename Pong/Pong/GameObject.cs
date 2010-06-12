@@ -28,5 +28,6 @@ namespace Pong
         }
         public int getHeight(){ return height; }
         public int getWidth() { return width; }
+        public int getCenterY() { return (int)position.Y + (height / 2); }
     }
 }

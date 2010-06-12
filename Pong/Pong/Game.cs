@@ -46,6 +46,9 @@ namespace Pong
         // TODO: Change init ball veloc to be initialised fairly raindomly
         Vector2 InitBallVeloc = new Vector2(-5, -1);
 
+        // speed of the bats
+        const int BAT_SPEED = 5;
+
         const int MAX_SCORE = 5;
         const int EDGE = 5;
 
@@ -132,6 +135,7 @@ namespace Pong
             {
                 gameUpdateKeyboard();
                 ballHandler();
+                aiMove();
                 // Check for winners
                 if (PlayerScore == MAX_SCORE)
                 {
@@ -147,6 +151,7 @@ namespace Pong
             if (!gameState)
             {
                 menuUpdateKeyboard();
+
             }      
 
             // TODO: Add your update logic here
@@ -289,13 +294,13 @@ namespace Pong
             //Move down for arrow down
             if (keybState.IsKeyDown(Keys.Down))
             {
-                LeftBat.position.Y += 5;
+                LeftBat.position.Y += BAT_SPEED;
             }
 
             //Move up for arrow up
             if (keybState.IsKeyDown(Keys.Up))
             {
-                LeftBat.position.Y -= 5;
+                LeftBat.position.Y -= BAT_SPEED;
             }
 
             //Stop bat from falling off the side
@@ -323,6 +328,37 @@ namespace Pong
                 gameState = true;
             }
         }
+
+        private void aiMove()
+        {
+            if (Ball.position.X > graphics.GraphicsDevice.Viewport.Width / 2)
+            {
+                //if the ball is in the right bat's half, it can move
+                
+                //move up
+                if (Ball.position.Y < RightBat.getCenterY())
+                {
+                    RightBat.position.Y -= BAT_SPEED;
+                }
+
+                //move down
+                if (Ball.position.Y > RightBat.getCenterY())
+                {
+                    RightBat.position.Y += BAT_SPEED;
+                }
+
+                //Stop bat from falling off the side
+                if (RightBat.position.Y < ScoreBar)
+                {
+                    RightBat.position.Y = ScoreBar;
+                }
+                if (RightBat.position.Y > (graphics.GraphicsDevice.Viewport.Height - RightBat.getHeight()))
+                {
+                    RightBat.position.Y = graphics.GraphicsDevice.Viewport.Height - RightBat.getHeight();
+                }
+            }
+        }
+
     }
 }
 
