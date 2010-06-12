@@ -190,6 +190,8 @@ namespace Pong
         {
             // Ensure within horizontal field dimensions
             // Ensure within vertical field dimensions
+            // 9px allowed either end for ball collision
+            // Perhaps alter y co-orinate proportionally if within this range
             
             // Left bat collision check
             // If adjacent to bat or partly past bat
@@ -268,11 +270,11 @@ namespace Pong
 
         private void drawField()
         {
-            for (int i = ScoreBar; i < graphics.GraphicsDevice.Viewport.Height; i++)
+            for (int i = ScoreBar; i < viewportRect.Bottom; i++)
             {
-                spriteBatch.Draw(lineTexture, new Vector2(graphics.GraphicsDevice.Viewport.Width/2 - 2, i), Color.White);
+                spriteBatch.Draw(lineTexture, new Vector2(viewportRect.Right/2 - 2, i), Color.White);
             }
-            for (int j = 0; j < graphics.GraphicsDevice.Viewport.Width; j += 4)
+            for (int j = 0; j < viewportRect.Right; j += 4)
             {
                 spriteBatch.Draw(lineTexture, new Vector2(j, ScoreBar - 1), Color.White);
             }
@@ -308,9 +310,9 @@ namespace Pong
             {
                 LeftBat.position.Y = ScoreBar;
             }
-            if (LeftBat.position.Y > (graphics.GraphicsDevice.Viewport.Height - LeftBat.getHeight()))
+            if (LeftBat.position.Y > (viewportRect.Bottom - LeftBat.getHeight()))
             {
-                LeftBat.position.Y = graphics.GraphicsDevice.Viewport.Height - LeftBat.getHeight();
+                LeftBat.position.Y = viewportRect.Bottom - LeftBat.getHeight();
             }
         }
 
@@ -331,9 +333,10 @@ namespace Pong
 
         private void aiMove()
         {
-            if (Ball.position.X > graphics.GraphicsDevice.Viewport.Width / 2)
+            if (Ball.position.X > viewportRect.Right / 2 && Ball.velocity.X > 0)
             {
                 //if the ball is in the right bat's half, it can move
+                //if the ball is moving towards the right bat
                 
                 //move up
                 if (Ball.position.Y < RightBat.getCenterY())
@@ -342,9 +345,9 @@ namespace Pong
                 }
 
                 //move down
-                if (Ball.position.Y > RightBat.getCenterY())
+                if (Ball.position.Y >= RightBat.getCenterY())
                 {
-                    RightBat.position.Y += BAT_SPEED;
+                    RightBat.position.Y +=  BAT_SPEED;
                 }
 
                 //Stop bat from falling off the side
@@ -352,10 +355,12 @@ namespace Pong
                 {
                     RightBat.position.Y = ScoreBar;
                 }
-                if (RightBat.position.Y > (graphics.GraphicsDevice.Viewport.Height - RightBat.getHeight()))
+                if (RightBat.position.Y > (viewportRect.Bottom - RightBat.getHeight()))
                 {
-                    RightBat.position.Y = graphics.GraphicsDevice.Viewport.Height - RightBat.getHeight();
+                    RightBat.position.Y = viewportRect.Bottom - RightBat.getHeight();
                 }
+
+                //Possibly add return to center after each 'hit'
             }
         }
 
