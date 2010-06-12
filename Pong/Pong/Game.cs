@@ -94,7 +94,7 @@ namespace Pong
             // SET initial positions of scores
             CompScorePos = new Vector2(viewportRect.Width/2 - 200, viewportRect.Top + 14);
             PlayerScorePos = new Vector2(viewportRect.Width/2 + 200, viewportRect.Top + 14);
-            Ball.velocity = new Vector2(5, -1); // initialise ball movement for testing
+            Ball.velocity = new Vector2(-5, -1); // initialise ball movement for testing
             base.LoadContent();
 
         }
@@ -129,6 +129,7 @@ namespace Pong
             {
                 gameUpdateKeyboard();
                 ballHandler();
+                // Check for winners
                 if (PlayerScore == MAX_SCORE)
                 {
                     Winner = 1;
@@ -139,11 +140,13 @@ namespace Pong
                     Winner = 2;
                     gameState = false;
                 }
-            }
+            }            
             if (!gameState)
             {
                 menuUpdateKeyboard();
             }
+            
+            
 
             // TODO: Add your update logic here
             // MOVE BALL
@@ -176,36 +179,60 @@ namespace Pong
             base.Draw(gameTime);
         }
 
-        // Ball Movement and colisions performed here
+        /// <summary>
+        /// Ball movement and Collision detection handled here
+        /// </summary>
         private void ballHandler()
         {
             // Ensure within horizontal field dimensions
             // Ensure within vertical field dimensions
-            if ((Ball.position.X > 0 && Ball.position.X < viewportRect.Right - Ball.getWidth()) 
-                && (Ball.position.Y > ScoreBar && Ball.position.Y < viewportRect.Bottom - Ball.getHeight()))
+            if ((Ball.position.X > 0 && Ball.position.X < viewportRect.Right - Ball.getWidth()) && (Ball.position.Y > ScoreBar && Ball.position.Y < viewportRect.Bottom - Ball.getHeight()))
             {
+                // TODO: Check RightBat covers current Ball Y co-ordinate
+                // AFTER: Computer AI is sorted
+
+                // Left bat collision check
+                // If adjacent to bat or partly past bat
+                if ((Ball.position.X <= EDGE + LeftBat.getWidth() && Ball.position.X != 0) 
+                    && (Ball.position.Y > LeftBat.position.Y - Ball.getHeight() 
+                        && Ball.position.Y < LeftBat.position.Y + LeftBat.getHeight() + Ball.getHeight()))
+                {
+                    // Reverse vector
+                    Ball.velocity.X *= -1;
+                    Ball.velocity.Y *= -1;
+                }
+
+                //// Right bat collision check
+                //// If adjacent or partly past bat
+                //if (Ball.position.X >= viewportRect.Right - EDGE - RightBat.getWidth() && Ball.position.X != viewportRect.Right - Ball.getWidth())
+                //{
+                //    // Reverse vector
+                //    Ball.velocity.X *= -1;
+                //    Ball.velocity.Y *= -1;
+                //}
+                
                 Ball.position += Ball.velocity;
             }
+            
+            // If ball goes past player bat
             else if (Ball.position.X == 0)
             {
-                // give computer a point
-                if (CompScore < MAX_SCORE)
-                {
-                    CompScore++;
-                    Ball.position = InitBallPos;
-                }
+                CompScore++;
+                Ball.position = InitBallPos;
             }
+            
+            // If ball goes past computer bat
             else if (Ball.position.X == viewportRect.Right - Ball.getWidth())
             {
-                // give player a point
-                if (PlayerScore < MAX_SCORE)
-                {
-                    PlayerScore++;
-                    Ball.position = InitBallPos;
-                }
-            }
+                PlayerScore++;
+                Ball.position = InitBallPos;
+            }     
         }
 
+        /// <summary>
+        /// Scores drawn from the center of their string to ensure they do not move
+        /// throghout gameplay
+        /// </summary>
         private void drawScores()
         {
             // Computer Score
