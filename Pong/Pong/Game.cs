@@ -43,6 +43,8 @@ namespace Pong
         Vector2 CompScorePos;
         Vector2 PlayerScorePos;
         Vector2 InitBallPos;
+        // TODO: Change init ball veloc to be initialised fairly raindomly
+        Vector2 InitBallVeloc = new Vector2(-5, -1);
 
         const int MAX_SCORE = 5;
         const int EDGE = 5;
@@ -92,9 +94,9 @@ namespace Pong
             LeftBat.position = new Vector2(viewportRect.Left + EDGE, viewportRect.Top + ScoreBar);
             RightBat.position = new Vector2(viewportRect.Right - RightBat.getWidth() - EDGE, viewportRect.Bottom - RightBat.getHeight());
             // SET initial positions of scores
-            CompScorePos = new Vector2(viewportRect.Width/2 - 200, viewportRect.Top + 14);
-            PlayerScorePos = new Vector2(viewportRect.Width/2 + 200, viewportRect.Top + 14);
-            Ball.velocity = new Vector2(-5, -1); // initialise ball movement for testing
+            CompScorePos = new Vector2(viewportRect.Width/2 + 200, viewportRect.Top + 14);
+            PlayerScorePos = new Vector2(viewportRect.Width/2 - 200, viewportRect.Top + 14);
+            Ball.velocity = InitBallVeloc; // initialise ball movement for testing
             base.LoadContent();
 
         }
@@ -202,14 +204,14 @@ namespace Pong
                     Ball.velocity.Y *= -1;
                 }
 
-                //// Right bat collision check
-                //// If adjacent or partly past bat
-                //if (Ball.position.X >= viewportRect.Right - EDGE - RightBat.getWidth() && Ball.position.X != viewportRect.Right - Ball.getWidth())
-                //{
-                //    // Reverse vector
-                //    Ball.velocity.X *= -1;
-                //    Ball.velocity.Y *= -1;
-                //}
+                // Right bat collision check
+                // If adjacent or partly past bat
+                if (Ball.position.X >= viewportRect.Right - EDGE - RightBat.getWidth() && Ball.position.X != viewportRect.Right - Ball.getWidth())
+                {
+                    // Reverse vector
+                    Ball.velocity.X *= -1;
+                    Ball.velocity.Y *= -1;
+                }
                 
                 Ball.position += Ball.velocity;
             }
