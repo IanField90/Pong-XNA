@@ -23,7 +23,13 @@ namespace Pong
         // Game state
         // true = playing ; false = menu
         bool gameState = false;
-        int Winner = 0;
+        enum Winner
+        {
+            NEITHER, PLAYER, COMP
+        };
+
+        Winner PrevWinner = Winner.NEITHER; // Used for 'serve'
+        Winner OverallWinner = Winner.NEITHER;
 
         // Graphics
         GraphicsDeviceManager graphics;
@@ -95,7 +101,7 @@ namespace Pong
             // SET initial positions of objects
             Ball.position = InitBallPos;
             LeftBat.position = new Vector2(viewportRect.Left + EDGE, viewportRect.Top + ScoreBar);
-            RightBat.position = new Vector2(viewportRect.Right - RightBat.getWidth() - EDGE, viewportRect.Bottom - RightBat.getHeight() - 300); // -300 is a test for right bat collision
+            RightBat.position = new Vector2(viewportRect.Right - RightBat.getWidth() - EDGE, viewportRect.Bottom - RightBat.getHeight());
             
             // SET initial positions of scores
             CompScorePos = new Vector2(viewportRect.Width/2 + 200, viewportRect.Top + 14);
@@ -139,12 +145,12 @@ namespace Pong
                 // Check for winners
                 if (PlayerScore == MAX_SCORE)
                 {
-                    Winner = 1;
+                    OverallWinner = Winner.PLAYER;
                     gameState = false;
                 }
                 if (CompScore == MAX_SCORE)
                 {
-                    Winner = 2;
+                    OverallWinner = Winner.COMP;
                     gameState = false;
                 }
             }            
@@ -283,9 +289,9 @@ namespace Pong
         private void drawMenu()
         {
             spriteBatch.DrawString(Font1, "Press Enter To Begin...", new Vector2(100,100), Color.White);
-            if(Winner == 1)
+            if(OverallWinner == Winner.PLAYER)
                 spriteBatch.DrawString(Font1, "You Win!", new Vector2(100, 150), Color.LimeGreen);
-            if(Winner == 2)
+            if(OverallWinner == Winner.COMP)
                 spriteBatch.DrawString(Font1, "Computer Wins!", new Vector2(100, 150), Color.Red);      
         }
 
@@ -324,7 +330,7 @@ namespace Pong
             if (keybState.IsKeyDown(Keys.Enter))
             {
                 // Reset winner and scores
-                Winner = 0;
+                OverallWinner = Winner.NEITHER;
                 PlayerScore = 0;
                 CompScore = 0;
                 gameState = true;
@@ -337,13 +343,15 @@ namespace Pong
             {
                 //if the ball is in the right bat's half, it can move
                 //if the ball is moving towards the right bat
-                
+
+                //Currently moves pixel by pixel however as bat moves by BAT_SPEED both conditions are met 'simultaneously'
+
                 //make sure the bat doesn't move past the ball
                 int distance = (int)(RightBat.getCenterY() - Ball.position.Y);
                 if (distance < 0) distance *= -1;
 
                 //move up 
-                if (Ball.position.Y < RightBat.getCenterY())
+                if (Ball.position.Y < RightBat.getCenterY() && Ball.position.Y < RightBat.getCenterY() - BAT_SPEED)
                 {
                     if ( distance > BAT_SPEED)
                     {
@@ -355,8 +363,9 @@ namespace Pong
                     }
                 }
                 //move down
-                else if (Ball.position.Y > RightBat.getCenterY())
-                {
+
+               else if (Ball.position.Y > RightBat.getCenterY())
+               {
                     if (distance > BAT_SPEED)
                     {
                         RightBat.position.Y += BAT_SPEED; //fast down
@@ -365,7 +374,7 @@ namespace Pong
                     {
                         RightBat.position.Y += 1; // slow down
                     }
-                }
+               }
 
                 //Stop bat from falling off the side
                 if (RightBat.position.Y < ScoreBar)
@@ -379,7 +388,7 @@ namespace Pong
 
                 //Possibly add return to center after each 'hit'
             }
-        }
+       }
 
     }
 }
