@@ -338,16 +338,33 @@ namespace Pong
                 //if the ball is in the right bat's half, it can move
                 //if the ball is moving towards the right bat
                 
-                //move up
+                //make sure the bat doesn't move past the ball
+                int distance = (int)(RightBat.getCenterY() - Ball.position.Y);
+                if (distance < 0) distance *= -1;
+
+                //move up 
                 if (Ball.position.Y < RightBat.getCenterY())
                 {
-                    RightBat.position.Y -= BAT_SPEED;
+                    if ( distance > BAT_SPEED)
+                    {
+                        RightBat.position.Y -= BAT_SPEED; // fast up
+                    }
+                    else if ( distance < BAT_SPEED )
+                    {
+                        RightBat.position.Y -= 1; //  up
+                    }
                 }
-
                 //move down
-                if (Ball.position.Y >= RightBat.getCenterY())
+                else if (Ball.position.Y > RightBat.getCenterY())
                 {
-                    RightBat.position.Y +=  BAT_SPEED;
+                    if (distance > BAT_SPEED)
+                    {
+                        RightBat.position.Y += BAT_SPEED; //fast down
+                    }
+                    else if (distance < BAT_SPEED)
+                    {
+                        RightBat.position.Y += 1; // slow down
+                    }
                 }
 
                 //Stop bat from falling off the side
