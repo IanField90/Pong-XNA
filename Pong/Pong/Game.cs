@@ -44,7 +44,7 @@ namespace Pong
         Vector2 PlayerScorePos;
         Vector2 InitBallPos;
         // TODO: Change init ball veloc to be initialised fairly raindomly
-        Vector2 InitBallVeloc = new Vector2(-5, -1);
+        Vector2 InitBallVeloc = new Vector2(-7, -4);
 
         // speed of the bats
         const int BAT_SPEED = 5;
@@ -228,14 +228,14 @@ namespace Pong
             }
 
             // If ball goes past player bat
-            if (Ball.position.X == 0)
+            if (Ball.position.X < 0)
             {
                 CompScore++;
                 Ball.position = InitBallPos;
             }
             
             // If ball goes past computer bat
-            if (Ball.position.X == viewportRect.Right - Ball.getWidth())
+            if (Ball.position.X > viewportRect.Right - Ball.getWidth())
             {
                 PlayerScore++;
                 Ball.position = InitBallPos;
